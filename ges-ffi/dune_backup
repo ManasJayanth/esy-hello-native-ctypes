@@ -1,0 +1,28 @@
+(rule
+  (targets stubgen.exe)
+  (action (run esy b ocamlfind ocamlopt -linkpkg -package ctypes,ctypes.foreign -o stubgen.exe ges.ml stubgen.ml)))
+
+(rule
+ (targets stub.ml)
+ (deps stubgen.exe)
+ (action (with-stdout-to %{targets} (run %{deps} -ml))))
+
+(rule
+ (targets stubs.c)
+ (deps (:stubgen stubgen.exe)) ;; (:stubgen ./stubgen/ffi_stubgen.exe) ../../vendor/yaml.h ../../vendor/yaml_private.h)
+ (action (with-stdout-to %{targets} (run %{stubgen} -c))))
+
+
+(rule
+ (targets c_flags.sexp c_library_flags.sexp)
+ (deps    (:discover config/discover.exe))
+ (action  (run %{discover})))
+
+(library
+  (name ges)
+  (flags (-w -40 -w +26))
+  (public_name ges)
+  (libraries ctypes ctypes.foreign)
+  (c_names foo)
+  (c_flags         (:include c_flags.sexp))
+  (c_library_flags (:include c_library_flags.sexp)))

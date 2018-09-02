@@ -1,0 +1,8 @@
+(rule
+ (targets foo)
+ (action (run %{cc} -c foo.c)))
+
+(library
+ (name ges_c)
+ (public_name ges.c)
+ (c_names foo))

@@ -1,0 +1,25 @@
+{
+  "name": "ges",
+  "version": "0.1.0",
+  "description": "Reason workflow with Esy",
+  "license": "MIT",
+  "esy": {
+    "build": "refmterr dune build -p #{self.name}",
+    "NOTE": "Optional release Section. Customizes result of `esy release`",
+    "release": {
+      "releasedBinaries": [ "Hello.exe" ],
+      "deleteFromBinaryRelease": [ "*esy_ocaml_*", "*refmterr-*", "ocaml-*" ]
+    }
+  },
+  "dependencies": {
+    "@esy-ocaml/reason": "*",
+    "@opam/ctypes": "0.14.0",
+    "@opam/ctypes-foreign": "0.4.0",
+    "@opam/dune": "*",
+    "@opam/lambda-term": "*",
+    "@opam/lwt": "*",
+    "ocaml": "~4.6.0",
+    "refmterr": "*"
+  },
+  "devDependencies": { "@esy-ocaml/merlin": "*", "ocaml": "~4.6.0" }
+}

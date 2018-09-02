@@ -1,0 +1,21 @@
+(rule
+ (targets types_stub.ml)
+ (deps ../stubgen/ml_types_stubgen.exe)
+ (action (with-stdout-to %{targets} (run %{deps}))))
+
+(rule
+ (targets stub.ml)
+ (deps ../stubgen/stubgen.exe)
+ (action (with-stdout-to %{targets} (run %{deps} -ml))))
+
+(rule
+ (targets stub.c)
+ (deps (:stubgen ../stubgen/stubgen.exe))
+ (action (with-stdout-to %{targets} (run %{stubgen} -c))))
+
+(library
+  (name ges)
+  (flags (-w -40 -w +26))
+  (public_name ges)
+  (libraries ges.binding.types ges.bindings ctypes ctypes.foreign ges.c)
+  (c_names stub))
