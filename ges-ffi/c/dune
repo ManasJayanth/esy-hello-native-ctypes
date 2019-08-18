@@ -10,6 +10,11 @@
  (action (run ar rcs %{targets} %{deps})))
 
 (rule
+ (targets dllges_c_stubs.dll)
+ (deps   foo.o bar.o)
+ (action (run %{cc} -shared -o %{targets} %{deps})))
+
+(rule
  (targets dllges_c_stubs.so)
  (deps   foo.o bar.o)
  (action (run %{cc} -shared -o %{targets} %{deps})))

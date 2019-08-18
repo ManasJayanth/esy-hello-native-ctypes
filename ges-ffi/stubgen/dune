@@ -15,11 +15,13 @@
  (action (with-stdout-to %{targets} (run %{deps}))))
 
 ;; It would be lovely if jenga had rules to build from C.
+(rule (targets ctypes_path.txt)
+      (action (with-stdout-to %{targets} (run ocamlfind query ctypes))))
 
 (rule
  (targets ml_types_stubgen.exe)
- (deps    (:c ./ml_types_stubgen.c) ../c/libges_c_stubs.a)
+ (deps    (:c ./ml_types_stubgen.c) (:ctypes_path ctypes_path.txt) ../c/libges_c_stubs.a)
  (action (bash "\
 %{cc} %{c} -I../c/ \
-  -I `dirname %{lib:ctypes:ctypes_cstubs_internals.h}` \
+  -I%{read-lines:ctypes_path.txt} \
   -I %{ocaml_where} -o %{targets}")))
